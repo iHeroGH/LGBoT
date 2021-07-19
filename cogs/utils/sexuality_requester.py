@@ -1,5 +1,4 @@
 import requests
-import PIL
 from bs4 import BeautifulSoup
 
 BASE_URL = "https://lgbta.wikia.org/wiki/Category:Sexuality?from="
@@ -8,23 +7,24 @@ class SexualityRequester(object):
 
     def __init__(self, chosen_sexuality: str):
         self.chosen_sexuality = chosen_sexuality
-        self.url = self.get_url(self.chosen_sexuality[0])
-        self.soups = self.get_soups(self.url)
-        self.flg = self.get_flag(self.soups, chosen_sexuality)
+        self.url = self.get_url()
+        self.soup_list = self.get_soups()
 
-    def get_url(self, input_text:str):
+    def get_url(self):
         """Returns the request URL"""
-        return BASE_URL + input_text[0].upper()
+        return BASE_URL + self.chosen_sexuality[0].upper()
 
-    def get_soups(self, url):
+    def get_soups(self):
         """Webscrapes the LGBT Wiki for the sexualities in the letter group"""
-        soup = BeautifulSoup(requests.get(url).content, "html.parser")
-        soup = soup.find("body").find("div", class_="category-page__members").find_all("a")
-        return soup
+        soup = BeautifulSoup(requests.get(self.url).content, "html.parser")
+        soup_list = soup.find("body").find("div", class_="category-page__members").find_all("a")
+        self.soup_list = soup_list
 
-    def get_flag(self, soup_list, chosen_sexuality):
+        return soup_list
+
+    def get_flag(self):
         """Gets the flag image link for the chosen sexuality"""
-        for soup in soup_list:
+        for soup in self.soup_list:
             for image in soup.find_all("img"):
-                if image["alt"].lower() == chosen_sexuality.lower():
+                if image["alt"].lower() == self.chosen_sexuality.lower():
                     return (image['src'])

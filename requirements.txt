@@ -1,4 +1,5 @@
 voxelbotutils
 requests
 PIL
+io
 bs4
