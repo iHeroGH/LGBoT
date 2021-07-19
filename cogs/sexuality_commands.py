@@ -1,11 +1,11 @@
 import PIL as Image
 import io
 
-import voxelbotutils as utils
 import discord
 from discord.ext import commands
+import voxelbotutils as utils
 
-from cogs import utils as localutils
+from . import utils as localutils
 
 
 class SexualityCommands(utils.Cog):
