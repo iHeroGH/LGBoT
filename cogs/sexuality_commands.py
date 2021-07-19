@@ -1,4 +1,5 @@
 import PIL as Image
+import requests
 import io
 
 import discord
@@ -26,7 +27,7 @@ class SexualityCommands(vbutils.Cog):
         except Exception:
             return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing sexuality")
 
-        flag_image = Image.open(flag_url)
+        flag_image = Image.open(io.BytesIO(requests.get(flag_url).content))
         flag_image = flag_image.resize((128, 128), Image.NEAREST)
 
         sendable_image = io.BytesIO()
