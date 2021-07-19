@@ -9,7 +9,7 @@ import utils as localutils
 
 class SexualityCommands(vbutils.Cog):
 
-    @vbutils.command(aliases='flag')
+    @vbutils.command(aliases=['flag'])
     async def getflag(self, ctx:vbutils.Context, *, chosen_sexuality:str = None):
         """
         Gets the flag for the chosen sexuality.
