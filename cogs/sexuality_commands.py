@@ -34,7 +34,7 @@ class SexualityCommands(vbutils.Cog):
         flag_image.save(sendable_image, format='PNG')
         sendable_image.seek(0)
 
-        await ctx.send(f"The {chosen_sexuality.title()} Flag!", file=discord.File(sendable_image, 'flag.png'))
+        await ctx.send(f"The {chosen_sexuality.title()} Flag", file=discord.File(sendable_image, 'flag.png'))
 
 
 def setup(bot:vbutils.Bot):
