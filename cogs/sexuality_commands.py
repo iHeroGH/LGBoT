@@ -3,15 +3,14 @@ import io
 
 import discord
 from discord.ext import commands
-import voxelbotutils as utils
+import voxelbotutils as vbutils
 
-from . import utils as localutils
+import utils as localutils
 
+class SexualityCommands(vbutils.Cog):
 
-class SexualityCommands(utils.Cog):
-
-    @utils.command(aliases='flag')
-    async def getflag(self, ctx:utils.Context, *, chosen_sexuality:str = None):
+    @vbutils.command(aliases='flag')
+    async def getflag(self, ctx:vbutils.Context, *, chosen_sexuality:str = None):
         """
         Gets the flag for the chosen sexuality.
         """
@@ -37,6 +36,6 @@ class SexualityCommands(utils.Cog):
         await ctx.send(f"{chosen_sexuality.title()}'s Flag!", file=discord.File(sendable_image, 'flag.png'))
 
 
-def setup(bot:utils.Bot):
+def setup(bot:vbutils.Bot):
     x = SexualityCommands(bot)
     bot.add_cog(x)
