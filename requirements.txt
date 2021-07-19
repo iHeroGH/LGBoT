@@ -1,1 +1,4 @@
 voxelbotutils
+requests
+PIL
+bs4
