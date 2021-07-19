@@ -28,7 +28,9 @@ class SexualityCommands(vbutils.Cog):
             return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing sexuality")
 
         flag_image = Image.open(io.BytesIO(requests.get(flag_url).content))
-        flag_image = flag_image.resize((128, 128), Image.NEAREST)
+        width, height = flag_image.size
+        ratio = width / height
+        flag_image = flag_image.resize((1920, round(1920/ratio)), Image.NEAREST)
 
         sendable_image = io.BytesIO()
         flag_image.save(sendable_image, format='PNG')
