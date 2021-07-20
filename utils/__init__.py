@@ -1,2 +1,2 @@
-from utils.sexuality_requester import SexualityRequester
+from utils.requester import Requester
 
