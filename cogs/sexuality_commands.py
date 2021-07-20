@@ -26,9 +26,12 @@ class SexualityCommands(vbutils.Cog):
             flag_url = requester.get_flag()
         except Exception:
             return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing sexuality")
-
-        flag_image = Image.open(io.BytesIO(requests.get(flag_url).content))
-        #flag_image = flag_image.resize((1920, round(1920/ratio)), Image.NEAREST)
+        
+        flag_req = requests.get(flag_url).content
+        try:
+            flag_image = Image.open(io.BytesIO(flag_req))
+        except Exception:
+            return await ctx.send(f"It seems this flag's file format is currently unsupported :<\n{flag_url}")
 
         sendable_image = io.BytesIO()
         flag_image.save(sendable_image, format='PNG')

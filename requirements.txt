@@ -1,5 +1,7 @@
 voxelbotutils
+
 requests
-PIL
-io
 bs4
+io
+
+PIL
