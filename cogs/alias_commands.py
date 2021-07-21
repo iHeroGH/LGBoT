@@ -82,6 +82,26 @@ class AliasCommand(vbutils.Cog):
         # Send the final message
         await ctx.send(f"Got it! **{alias}** will no longer correct to anything.")
 
+    @vbutils.command(aliases=['deleteall'])
+    @commands.has_permissions(manage_guild=True)
+    async def removeall(self, ctx):
+        """
+        A command to remove all LGBT aliases.
+        """
+    
+        # Input to the database
+        try:
+            async with self.bot.database() as db:
+                alias_rows = await db("SELECT * FROM aliases WHERE guild_id = $1", ctx.guild.id)
+                if not alias_rows:
+                    return await ctx.send("This guild didn't have any aliases to begin with.")
+                # Delete all aliases
+                await db("DELETE FROM aliases WHERE guild_id = $1", ctx.guild.id)
+        except Exception:
+            return await ctx.send("I ran into an error removing your data.")
+        
+        await ctx.send("Removed all aliases successfully.")
+
     @vbutils.command(aliases=["list", "aliases"])
     async def listaliases(self, ctx, guild_id:int=None):
         """
