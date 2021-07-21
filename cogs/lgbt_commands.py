@@ -51,7 +51,7 @@ class LGBTCommands(vbutils.Cog):
         # And send it
         await ctx.send(f"The {chosen_topic.title()} Flag", file=discord.File(sendable_image, 'flag.png'))
 
-    @vbutils.command(aliases=['info'])
+    @vbutils.command(aliases=['info', 'def', 'desc', 'definition', 'description'])
     async def getinfo(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the flag for the chosen sexuality.
