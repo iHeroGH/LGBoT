@@ -46,3 +46,17 @@ async def autocorrect_alias(ctx, chosen_topic):
 
     # If there's an alias, return the actual topic, otherwise, return the original topic
     return (alias_rows[0]['actual_topic'] if alias_rows else chosen_topic)
+
+async def init_setup(ctx, chosen_topic):
+    """Initialise the setup for the commands info and flag"""
+    # Ask for a topic if one isn't given
+    chosen_topic = await autocorrect_alias(ctx, chosen_topic) or await ask_for_topic(ctx)
+    
+    # Get the Requester object
+    requester, chosen_topic = await localutils.get_request(ctx, chosen_topic)
+
+    # Silently fail if no requester was gotten - this is probably because they tried to input a command as a topic
+    if not requester:
+        return
+    
+    return (requester, chosen_topic)

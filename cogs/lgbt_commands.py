@@ -19,11 +19,7 @@ class LGBTCommands(vbutils.Cog):
         Gets the flag for the chosen sexuality.
         """
 
-        # Ask for a topic if one isn't given
-        chosen_topic = await localutils.autocorrect_alias(ctx, chosen_topic) or await localutils.ask_for_topic(ctx)
-        
-        # Get the Requester object
-        requester, chosen_topic = await localutils.get_request(ctx, chosen_topic)
+        requester, chosen_topic = await localutils.init_setup(ctx, chosen_topic)
 
         # Silently fail if no requester was gotten - this is probably because they tried to input a command as a topic
         if not requester:
@@ -57,11 +53,7 @@ class LGBTCommands(vbutils.Cog):
         Gets the flag for the chosen sexuality.
         """
 
-        # Ask for a topic if one isn't given
-        chosen_topic = await localutils.autocorrect_alias(ctx, chosen_topic) or await localutils.ask_for_topic(ctx)
-        
-        # Get the Requester object
-        requester, chosen_topic = await localutils.get_request(ctx, chosen_topic)
+        requester, chosen_topic = await localutils.init_setup(ctx, chosen_topic)
 
         # Silently fail if no requester was gotten - this is probably because they tried to input a command as a topic
         if not requester:
