@@ -1,9 +1,9 @@
+import re
 from PIL import Image
 import requests
 import io
 
 import discord
-from discord.ext import commands
 import voxelbotutils as vbutils
 
 import utils as localutils
@@ -17,10 +17,10 @@ class LGBTCommands(vbutils.Cog):
         """
 
         # Ask for a topic if one isn't given
-        chosen_topic = chosen_topic or self.ask_for_topic(ctx)
+        chosen_topic = chosen_topic or await self.ask_for_topic(ctx)
         
-        # Set up out request
-        requester = localutils.Requester(chosen_topic)
+        # Get the Requester object
+        requester, chosen_topic = await self.get_request(ctx, chosen_topic)
 
         # Get the flag - this fails if the topic is not found
         try:
@@ -51,10 +51,10 @@ class LGBTCommands(vbutils.Cog):
         """
 
         # Ask for a topic if one isn't given
-        chosen_topic = chosen_topic or self.ask_for_topic(ctx)
+        chosen_topic = chosen_topic or await self.ask_for_topic(ctx)
         
-        # Set up out request
-        requester = localutils.Requester(chosen_topic)
+        # Get the Requester object
+        requester, chosen_topic = await self.get_request(ctx, chosen_topic)
 
         # Get the info - this fails if the topic is not found
         try:
@@ -76,13 +76,38 @@ class LGBTCommands(vbutils.Cog):
         # And send it
         await ctx.send(embed=embed)
 
-    async def ask_for_topic(self, ctx):
+    async def ask_for_topic(self, ctx, send_message: bool=True) -> str:
         """Ask for a topic if one isn't already provided"""
-        await ctx.send("What LGBT topic would you like to see?")
-        await self.bot.wait_for('message', check=lambda m: m.author == ctx.author and m.channel == ctx.channel, timeout=30)
-        chosen_topic = ctx.message.content
 
+        # Ask for a topic
+        if send_message:
+            await ctx.send("What LGBT topic would you like to see?")
+
+        # Wait for a topic
+        chosen_topic = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author and m.channel == ctx.channel, timeout=30)
+        chosen_topic = chosen_topic.content
+
+        # Return the topic
         return chosen_topic
+
+    async def get_request(self, ctx, chosen_topic:str ) -> localutils.Requester:
+        """Keeps asking for a topic until a valid one is chosen. Returns a tuple (Requester Obj, Topic)"""
+
+        # Make sure the topic is valid
+        try:
+            # Get the request
+            requester = localutils.Requester(chosen_topic)
+        # Custom error for when the topic isn't found
+        except localutils.TopicNotFoundError:
+            # Ask again
+            await ctx.send("That topic wasn't found - input a different topic.")
+            chosen_topic = await self.ask_for_topic(ctx, False)
+            # Try again
+            return await self.get_request(ctx, chosen_topic)
+
+        # Return it
+        return (requester, chosen_topic)
+
 
 
 def setup(bot:vbutils.Bot):
