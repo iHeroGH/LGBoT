@@ -26,12 +26,13 @@ class LGBTCommands(vbutils.Cog):
         try:
             flag_url = requester.get_flag()
         except Exception:
-            return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing sexuality")
+            return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing topic")
         
         # Turn the image into an Image object from the bytes - this fails if the file format is an SVG
         flag_req = requests.get(flag_url).content
         try:
-            flag_image = Image.open(io.BytesIO(flag_req))
+            flag_bytes = io.BytesIO(flag_req)
+            flag_image = Image.open(flag_bytes)
         except Exception:
             return await ctx.send(f"It seems this flag's file format is currently unsupported :<\n{flag_url}")
 
@@ -56,7 +57,10 @@ class LGBTCommands(vbutils.Cog):
         requester = localutils.Requester(chosen_topic)
 
         # Get the info - this fails if the topic is not found
-        topic_info = requester.get_info()
+        try:
+            topic_info = requester.get_info()
+        except Exception:
+            return await ctx.send("Something went wrong getting the topic's info - make sure you entered an existing topic")
 
         # Set up the embed
         embed = vbutils.Embed(title= f"{chosen_topic.title()} Information", description=topic_info, use_random_colour=True)
@@ -64,7 +68,8 @@ class LGBTCommands(vbutils.Cog):
 
         # Try to get the flag thumbnail. This may fail, in which case, a thumbnail will not be sent
         try:
-            embed.set_thumbnail(url=requester.get_flag())
+            flag_url = requester.get_flag()
+            embed.set_thumbnail(url=flag_url)
         except Exception:
             pass
         
