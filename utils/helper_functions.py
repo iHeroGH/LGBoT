@@ -16,7 +16,7 @@ async def ask_for_topic(ctx, send_message: bool=True) -> str:
             return None
 
         # Return the topic
-        return chosen_topic
+        return await autocorrect_alias(ctx, chosen_topic)
 
 async def get_request(ctx, chosen_topic:str) -> localutils.Requester:
     """Keeps asking for a topic until a valid one is chosen. Returns a tuple (Requester Obj, Topic)"""
@@ -36,3 +36,13 @@ async def get_request(ctx, chosen_topic:str) -> localutils.Requester:
 
     # Return it
     return (requester, chosen_topic)
+
+async def autocorrect_alias(ctx, chosen_topic):
+    """Set an alias to the actual topic"""
+
+    # Get the alias from the database
+    async with ctx.bot.database() as db:
+        alias_rows = await db("SELECT * FROM aliases WHERE guild_id = $1 AND alias = $2", ctx.guild.id, chosen_topic)
+
+    # If there's an alias, return the actual topic, otherwise, return the original topic
+    return (alias_rows[0]['actual_topic'] if alias_rows else chosen_topic)

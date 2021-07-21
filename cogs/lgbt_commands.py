@@ -20,7 +20,7 @@ class LGBTCommands(vbutils.Cog):
         """
 
         # Ask for a topic if one isn't given
-        chosen_topic = chosen_topic or await localutils.ask_for_topic(ctx)
+        chosen_topic = await localutils.autocorrect_alias(ctx, chosen_topic) or await localutils.ask_for_topic(ctx)
         
         # Get the Requester object
         requester, chosen_topic = await localutils.get_request(ctx, chosen_topic)
@@ -58,7 +58,7 @@ class LGBTCommands(vbutils.Cog):
         """
 
         # Ask for a topic if one isn't given
-        chosen_topic = chosen_topic or await localutils.ask_for_topic(ctx)
+        chosen_topic = await localutils.autocorrect_alias(ctx, chosen_topic) or await localutils.ask_for_topic(ctx)
         
         # Get the Requester object
         requester, chosen_topic = await localutils.get_request(ctx, chosen_topic)
