@@ -35,7 +35,7 @@ class LGBTCommands(vbutils.Cog):
         
         # Turn the image into an Image object from the bytes - this fails if the file format is an SVG
         async with ctx.typing():
-            async with aiohttp.Session() as session:
+            async with aiohttp.ClientSession() as session:
                 async with session.get(flag_url) as response:
                     flag_req = await response.read() 
             try:

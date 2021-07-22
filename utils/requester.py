@@ -48,7 +48,7 @@ class Requester(object):
         """Webscrapes the LGBT Wiki for the chosen topic"""
 
         v = cls(chosen_topic)
-        async with aiohttp.ClientSession as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get() as response:
                 soup = bs4.BeautifulSoup(await response.text(), "html.parser")
         v.soup = soup
