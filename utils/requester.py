@@ -10,9 +10,12 @@ class Requester(object):
     Requester handles all the data transfers between Discord and the LGBTA wiki
     """
 
+    cache = {}
+
     def __init__(self, chosen_topic: str, soup = None):
         self.chosen_topic = chosen_topic
         self.soup = soup
+        self.cache[self.chosen_topic] = self
 
     @property
     def soup(self):
@@ -47,12 +50,16 @@ class Requester(object):
     async def get_requester(cls, chosen_topic: str):
         """Webscrapes the LGBT Wiki for the chosen topic"""
 
-        v = cls(chosen_topic)
+        if chosen_topic in cls.cache:
+            return cls.cache[chosen_topic]
+
+        requester = cls(chosen_topic)
         async with aiohttp.ClientSession() as session:
-            async with session.get(v.url) as response:
+            async with session.get(requester.url) as response:
                 soup = bs4.BeautifulSoup(await response.text(), "html.parser")
-        v.soup = soup
-        return v
+        requester.soup = soup
+        
+        return requester
 
     def refine_soup(self, soup) -> bs4.element.Tag:
         """Refines the soup to get the important content of the page"""
