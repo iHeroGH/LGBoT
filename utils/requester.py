@@ -12,7 +12,8 @@ class Requester(object):
 
     def __init__(self, chosen_topic: str, soup = None):
         self.chosen_topic = chosen_topic
-        self.soup = soup 
+        self._soup = None
+        self.soup = soup
 
     @property
     def soup(self):
