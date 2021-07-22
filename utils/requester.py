@@ -49,7 +49,7 @@ class Requester(object):
 
         v = cls(chosen_topic)
         async with aiohttp.ClientSession() as session:
-            async with session.get() as response:
+            async with session.get(v.url) as response:
                 soup = bs4.BeautifulSoup(await response.text(), "html.parser")
         v.soup = soup
         return v
