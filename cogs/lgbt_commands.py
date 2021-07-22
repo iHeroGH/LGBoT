@@ -13,8 +13,8 @@ class LGBTCommands(vbutils.Cog):
     def __init__(self, bot:vbutils.Bot):
         self.bot = bot
 
-    @vbutils.command(aliases=['flag'])
-    async def getflag(self, ctx:vbutils.Context, *, chosen_topic:str = None):
+    @vbutils.command(aliases=['getflag'])
+    async def flag(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the flag for the chosen sexuality.
         """
@@ -47,8 +47,8 @@ class LGBTCommands(vbutils.Cog):
         # And send it
         await ctx.send(f"The {chosen_topic.title()} Flag", file=discord.File(sendable_image, 'flag.png'))
 
-    @vbutils.command(aliases=['info', 'def', 'desc', 'definition', 'description'])
-    async def getinfo(self, ctx:vbutils.Context, *, chosen_topic:str = None):
+    @vbutils.command(aliases=['getinfo', 'def', 'desc', 'definition', 'description'])
+    async def info(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the flag for the chosen sexuality.
         """
