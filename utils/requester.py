@@ -12,7 +12,6 @@ class Requester(object):
 
     def __init__(self, chosen_topic: str, soup = None):
         self.chosen_topic = chosen_topic
-        self._soup = None
         self.soup = soup
 
     @property
@@ -23,7 +22,7 @@ class Requester(object):
     def soup(self, value):
         if value:
             self.check_exists(value)
-            self._soup = self.refine_soup()
+            self._soup = self.refine_soup(value)
 
     def __repr__(self):
         """The string representation of the Requester class"""
@@ -55,10 +54,10 @@ class Requester(object):
         v.soup = soup
         return v
 
-    def refine_soup(self) -> bs4.element.Tag:
+    def refine_soup(self, soup) -> bs4.element.Tag:
         """Refines the soup to get the important content of the page"""
 
-        return self.soup.find("body").find("div", class_="mw-parser-output")
+        return soup.find("body").find("div", class_="mw-parser-output")
 
     def get_info(self) -> str:
         """Gets the topic's info"""
