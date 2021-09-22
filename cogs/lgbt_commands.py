@@ -15,7 +15,7 @@ class LGBTCommands(vbutils.Cog):
         self.bot = bot
 
     @vbutils.command(aliases=['getflag'])
-    @vbutils.cooldown.cooldown(1, 5, commands.BucketType.user)
+    @discord.cooldown.cooldown(1, 5, commands.BucketType.user)
     async def flag(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the flag for the chosen LGTB topic.
@@ -53,7 +53,7 @@ class LGBTCommands(vbutils.Cog):
         await ctx.send(f"The {chosen_topic.title()} Flag", file=discord.File(sendable_image, 'flag.png'))
 
     @vbutils.command(aliases=['getinfo', 'def', 'desc', 'definition', 'description'])
-    @vbutils.cooldown.cooldown(1, 5, commands.BucketType.user)
+    @discord.cooldown.cooldown(1, 5, commands.BucketType.user)
     async def info(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the information block for the chosen LGBT topic.
