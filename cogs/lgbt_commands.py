@@ -18,7 +18,7 @@ class LGBTCommands(vbutils.Cog):
     @vbutils.cooldown.cooldown(1, 5, commands.BucketType.user)
     async def flag(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
-        Gets the flag for the chosen sexuality.
+        Gets the flag for the chosen LGTB topic.
         """
 
         requester, chosen_topic = await localutils.init_setup(ctx, chosen_topic)
@@ -32,12 +32,12 @@ class LGBTCommands(vbutils.Cog):
             flag_url = requester.get_flag()
         except Exception:
             return await ctx.send("Something went wrong getting the flag's image - make sure you entered an existing topic")
-        
+
         # Turn the image into an Image object from the bytes - this fails if the file format is an SVG
         async with ctx.typing():
             async with aiohttp.ClientSession() as session:
                 async with session.get(flag_url) as response:
-                    flag_req = await response.read() 
+                    flag_req = await response.read()
             try:
                 flag_bytes = io.BytesIO(flag_req)
                 flag_image = Image.open(flag_bytes)
@@ -56,7 +56,7 @@ class LGBTCommands(vbutils.Cog):
     @vbutils.cooldown.cooldown(1, 5, commands.BucketType.user)
     async def info(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
-        Gets the flag for the chosen sexuality.
+        Gets the information block for the chosen LGBT topic.
         """
 
         try:
@@ -82,9 +82,9 @@ class LGBTCommands(vbutils.Cog):
                 embed.set_thumbnail(url=flag_url)
             except Exception:
                 pass
-        
+
         # And send it
-        
+
         await ctx.send(embed=embed)
 
 def setup(bot:vbutils.Bot):
