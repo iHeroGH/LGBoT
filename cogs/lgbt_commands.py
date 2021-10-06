@@ -3,6 +3,7 @@ import aiohttp
 import io
 
 import discord
+from discord.ext import commands
 import voxelbotutils as vbutils
 
 import utils as localutils
@@ -13,7 +14,7 @@ class LGBTCommands(vbutils.Cog):
         self.bot = bot
 
     @vbutils.command(aliases=['getflag'])
-    @vbutils.cooldown(1, 5, vbutils.BucketType.user)
+    @commands.cooldown(1, 5, vbutils.BucketType.user)
     async def flag(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the flag for the chosen LGTB topic.
@@ -51,7 +52,7 @@ class LGBTCommands(vbutils.Cog):
         await ctx.send(f"The {chosen_topic.title()} Flag", file=discord.File(sendable_image, 'flag.png'))
 
     @vbutils.command(aliases=['getinfo', 'def', 'desc', 'definition', 'description'])
-    @vbutils.cooldown(1, 5, vbutils.BucketType.user)
+    @commands.cooldown(1, 5, vbutils.BucketType.user)
     async def info(self, ctx:vbutils.Context, *, chosen_topic:str = None):
         """
         Gets the information block for the chosen LGBT topic.
