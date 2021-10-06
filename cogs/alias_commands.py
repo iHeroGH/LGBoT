@@ -1,10 +1,12 @@
 import voxelbotutils as vbutils
+import discord
+from discord.ext import commands
 
 
 class AliasCommand(vbutils.Cog):
 
     @vbutils.command(aliases=['alias', 'settings', 'add'])
-    @vbutils.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def addalias(self, ctx:vbutils.Context, alias:str=None, actual_topic:str=None):
         """
         A command to add LGBT aliases (ex: enby - nonbinary).
@@ -59,7 +61,7 @@ class AliasCommand(vbutils.Cog):
         await ctx.send(f"Got it! **{alias}** will now correct to **{actual_topic}**.")
 
     @vbutils.command(aliases=['deletealias', 'delete', 'remove'])
-    @vbutils.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def removealias(self, ctx, alias:str):
         """
         A command to remove LGBT aliases.
@@ -82,7 +84,7 @@ class AliasCommand(vbutils.Cog):
         await ctx.send(f"Got it! **{alias}** will no longer correct to anything.")
 
     @vbutils.command(aliases=['deleteall'])
-    @vbutils.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def removeall(self, ctx):
         """
         A command to remove all LGBT aliases.

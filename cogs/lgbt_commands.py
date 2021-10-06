@@ -1,4 +1,3 @@
-import re
 from PIL import Image
 import aiohttp
 import io
