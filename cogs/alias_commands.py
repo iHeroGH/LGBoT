@@ -1,16 +1,15 @@
-from discord.ext import commands
 import voxelbotutils as vbutils
 
 
 class AliasCommand(vbutils.Cog):
 
     @vbutils.command(aliases=['alias', 'settings', 'add'])
-    @commands.has_permissions(manage_guild=True)
+    @vbutils.has_permissions(manage_guild=True)
     async def addalias(self, ctx:vbutils.Context, alias:str=None, actual_topic:str=None):
         """
         A command to add LGBT aliases (ex: enby - nonbinary).
         """
-        
+
         # Get an alias
         if not alias:
             await ctx.send("What would you like the alias to be?")
@@ -27,7 +26,7 @@ class AliasCommand(vbutils.Cog):
         button1 = vbutils.Button("Yes", "yes",  style=vbutils.ButtonStyle.SUCCESS)
         button2 = vbutils.Button("No", "no", style=vbutils.ButtonStyle.DANGER)
 
-        # Put the buttons together 
+        # Put the buttons together
         components = vbutils.MessageComponents(
             vbutils.ActionRow(button1, button2)
         )
@@ -44,13 +43,13 @@ class AliasCommand(vbutils.Cog):
         # Send a response message if the user doesn't want to add the alias
         if payload.component.custom_id.lower() == "no":
             return await ctx.send(f"Okay, I won't change **{alias}** to **{actual_topic}**.")
-        
+
         # Input to the database
         try:
             async with self.bot.database() as db:
                 await db("""
-                    INSERT INTO aliases (guild_id, alias, actual_topic) VALUES ($1, $2, $3) 
-                    ON CONFLICT (guild_id, alias) DO UPDATE 
+                    INSERT INTO aliases (guild_id, alias, actual_topic) VALUES ($1, $2, $3)
+                    ON CONFLICT (guild_id, alias) DO UPDATE
                     SET actual_topic = $3
                     """, ctx.guild.id, alias, actual_topic)
         except Exception as e:
@@ -60,12 +59,12 @@ class AliasCommand(vbutils.Cog):
         await ctx.send(f"Got it! **{alias}** will now correct to **{actual_topic}**.")
 
     @vbutils.command(aliases=['deletealias', 'delete', 'remove'])
-    @commands.has_permissions(manage_guild=True)
+    @vbutils.has_permissions(manage_guild=True)
     async def removealias(self, ctx, alias:str):
         """
         A command to remove LGBT aliases.
         """
-    
+
         # Input to the database
         try:
             async with self.bot.database() as db:
@@ -83,12 +82,12 @@ class AliasCommand(vbutils.Cog):
         await ctx.send(f"Got it! **{alias}** will no longer correct to anything.")
 
     @vbutils.command(aliases=['deleteall'])
-    @commands.has_permissions(manage_guild=True)
+    @vbutils.has_permissions(manage_guild=True)
     async def removeall(self, ctx):
         """
         A command to remove all LGBT aliases.
         """
-    
+
         # Input to the database
         try:
             async with self.bot.database() as db:
@@ -99,7 +98,7 @@ class AliasCommand(vbutils.Cog):
                 await db("DELETE FROM aliases WHERE guild_id = $1", ctx.guild.id)
         except Exception:
             return await ctx.send("I ran into an error removing your data.")
-        
+
         await ctx.send("Removed all aliases successfully.")
 
     @vbutils.command(aliases=["list", "aliases"])
@@ -114,7 +113,7 @@ class AliasCommand(vbutils.Cog):
         # Get the aliases
         async with self.bot.database() as db:
             alias_rows = await db("SELECT * FROM aliases WHERE guild_id = $1", guild_id)
-        
+
         if not alias_rows:
             return await ctx.send(f"This server has no aliases! Set one up by running `{ctx.clean_prefix}add`.")
 
